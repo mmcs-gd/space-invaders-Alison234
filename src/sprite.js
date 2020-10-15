@@ -1,3 +1,5 @@
+import rectangle from "./geometryObject/rectangle";
+
 export default class Sprite {
   constructor(img, x, y, w, h) {
     this.img = img;
@@ -6,4 +8,20 @@ export default class Sprite {
   	this.w = w;
   	this.h = h;
   }
+  get size(){
+  	return  [this.w,this.h];
+  }
+
+  get width(){
+      return this.w;
+  }
+
+  get height(){
+      return this.h;
+  }
+
+  get image(){
+      return this.img;
+  }
+
 }
