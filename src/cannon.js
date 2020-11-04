@@ -1,4 +1,5 @@
 import Rectangle from "./geometryObject/rectangle";
+import Point from "./geometryObject/Point";
 
 export default class Cannon {
   constructor(x, y, sprite,lifes = 3) {
@@ -11,6 +12,11 @@ export default class Cannon {
   get Boundary(){
     let [boundaryWidth,boundaryHeight] = this._sprite.size;
     return new Rectangle(this.x,this.y,boundaryWidth,boundaryHeight);
+  }
+
+  center() {
+    let [w,h] = this._sprite.size;
+    return new Point(this.x + w / 2, this.y + h / 2, this)
   }
 
   draw(ctx, time) {

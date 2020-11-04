@@ -2,7 +2,7 @@ import Point from "./Point";
 import Straight from "./Straight";
 
 export default class Rectangle {
-    constructor(x, y, w, h,) {
+    constructor(x, y, w, h) {
         this.w = w
         this.h = h
         this.x = x

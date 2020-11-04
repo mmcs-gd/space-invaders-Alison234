@@ -1,4 +1,5 @@
 import Rectangle from "./geometryObject/rectangle";
+import Point from "./geometryObject/Point";
 
 export default class bunker{
     constructor(x,y,[spriteA,spriteB,spriteC,spriteD],strength = 100) {
@@ -15,6 +16,12 @@ export default class bunker{
         let [boundaryWidth,boundaryHeight] = this._spriteA.size;
         return new Rectangle(this.x,this.y+3,boundaryWidth,boundaryHeight-2);
     }
+
+    center() {
+        let [w,h] = this._spriteA.size;
+        return new Point(this.x + w / 2, this.y + h / 2, this)
+    }
+
 
     draw(ctx){
         //this.Boundary.draw(ctx)

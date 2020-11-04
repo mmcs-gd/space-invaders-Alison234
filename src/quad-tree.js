@@ -1,5 +1,5 @@
-import Rectangle from './rectangle'
-import Point from "./Point";
+import Rectangle from "./geometryObject/rectangle";
+import Point from "./geometryObject/Point";
 
 export default class QuadTree {
     constructor(boundary, capacity = 4) {
@@ -48,7 +48,6 @@ export default class QuadTree {
 
         for (const p of pts) {
             if (rect.contains(p)) {
-                //console.log("contains point", p);
                 found.push(p);
             }
         }
