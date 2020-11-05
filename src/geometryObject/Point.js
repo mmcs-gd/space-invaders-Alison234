@@ -5,7 +5,7 @@ export  default class Point{
         this.obj = obj;
     }
     get Obj(){
-        return obj;
+        return this.obj;
     }
 
 }

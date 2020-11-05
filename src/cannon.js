@@ -2,11 +2,11 @@ import Rectangle from "./geometryObject/rectangle";
 import Point from "./geometryObject/Point";
 
 export default class Cannon {
-  constructor(x, y, sprite,lifes = 3) {
+  constructor(x, y, sprite,hp = 3) {
     this.x = x;
   	this.y = y;
     this._sprite = sprite;
-    this.lifes = lifes;
+    this.hp = hp;
   }
 
   get Boundary(){

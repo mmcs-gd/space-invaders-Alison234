@@ -1,13 +1,13 @@
 import Rectangle from "./geometryObject/rectangle";
 import Point from "./geometryObject/Point";
 import sprite from "./sprite";
-import firePath from '../assets/fire.png'
 import {gameState} from "./game";
+import Bullet from "./bullet";
+import AlienBullet from "./AlienBullet";
 
-let fire = new sprite(new Image().src = "../assets/fire.png",0,0,20,20)
 
 export default class Alien {
-  constructor(x, y, [spriteA, spriteB], vy = 0.5, vx = 0.5, hp = 1, isDead = false) {
+  constructor(x, y, [spriteA, spriteB], vy = 0.5, vx = 0.5, hp = 1,typeOfFire = 0) {
     this.x = x;
     this.y = y;
     this._spriteA = spriteA;
@@ -15,7 +15,7 @@ export default class Alien {
     this.vy = vy;
     this.vx = vx;
     this.hp = hp;
-    this.isDead = isDead;
+    this.typeOfFire =typeOfFire;
   }
 
 
@@ -25,14 +25,27 @@ export default class Alien {
   }
 
   update(time) {
-    if(this.hp == 0){
-      this.isDead = true;
-    }
     if (Math.round(time) % 2 === 0) {
       this.y += this.vy;
       return;
     }
     this.x -= this.vx;
+  }
+
+
+  AlienFire(){
+    if(this.typeOfFire === 1 ){
+      let angel = -0.5;
+      for(let i  = 0;i<7;i++) {
+        angel +=0.1;
+        gameState.aliensBullets.push(new AlienBullet(this.x + 15, this.y + 2, 1, angel, "#cf670a"))
+      }
+    }
+    if(this.typeOfFire == 2){
+      let vx = Math.sin(this.x - gameState.cannon.x)
+      gameState.aliensBullets.push(new AlienBullet(this.x + 15, this.y + 2, 5,vx , "#1cdaf3"))
+    }
+
   }
 
   center() {
@@ -41,25 +54,14 @@ export default class Alien {
   }
 
   draw(ctx, time) {
-    if (!this.isDead) {
-      let sp = (Math.ceil(time / 1000) % 2 === 0) ? this._spriteA : this._spriteB;
-
+    let sp = (Math.ceil(time / 1000) % 2 === 0) ? this._spriteA : this._spriteB;
     //this.Boundary.draw(ctx)
     ctx.drawImage(
         sp.img,
         sp.x, sp.y, sp.w, sp.h,
         this.x, this.y, sp.w, sp.h
-    );}
-    else{
-      let im = new Image();
-      im.src = firePath;
-      ctx.drawImage(
-          im,
-          0, 0, 20, 19,
-          this.x, this.y, 20, 19
-      )
+    );
     }
-  }
 }
 
 

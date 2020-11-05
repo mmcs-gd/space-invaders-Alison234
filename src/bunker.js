@@ -26,10 +26,10 @@ export default class bunker{
     draw(ctx){
         //this.Boundary.draw(ctx)
         let sp;
-        if(this.strength === 100) sp = this._spriteA;
-        if(this.strength === 75) sp = this._spriteB;
-        if(this.strength === 50) sp = this._spriteC;
-        if(this.strength === 25) sp = this._spriteD;
+        if(this.strength <= 100) sp = this._spriteA;
+        if(this.strength <= 75) sp = this._spriteB;
+        if(this.strength <= 50) sp = this._spriteC;
+        if(this.strength <= 25) sp = this._spriteD;
         //this.Boundary.draw(ctx)
         ctx.drawImage(
             sp.img,
