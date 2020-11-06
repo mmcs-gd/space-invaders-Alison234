@@ -24,7 +24,7 @@ export default class AlienBullet{
     }
 
     draw(ctx) {
-        this.Boundary.draw(ctx)
+        //this.Boundary.draw(ctx)
         ctx.beginPath();
         ctx.arc(this.x, this.y, 4, 0, 2 * Math.PI);
         ctx.fillStyle = this.color;

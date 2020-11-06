@@ -4,19 +4,23 @@ import Bullet from './bullet'
 import Alien from './alien'
 import InputHandler from './input-handler'
 import assetPath from '../assets/invaders.png'
+import HpPath from '../assets/hp.png'
 import shipPath from '../assets/ship1.png'
 import bunker from "./bunker";
 import Rectangle from "./geometryObject/rectangle";
 import {collisionWithBorders,CollisionDetector} from "./CollusionDetector";
 import alien from "./alien";
 
+let sc= document.getElementById("score")
+
 let assets;
 let ship;
+let hpImage;
 let gameTime = 0;
 const sprites = {
   aliens: [],
   cannon: null,
-  bunker: null
+  bunker: null,
 };
 export const gameState = {
   bullets: [],
@@ -34,6 +38,7 @@ const inputHandler = new InputHandler();
 export function preload(onPreloadComplete) {
     assets = new Image();
     ship = new Image();
+
 	assets.addEventListener("load", () => {
     sprites.cannon = new Sprite(ship, 0, 0, 31, 30);
     sprites.aliens = [
@@ -52,6 +57,7 @@ export function preload(onPreloadComplete) {
   });
 	assets.src = assetPath;
     ship.src = shipPath;
+
 }
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
@@ -60,7 +66,7 @@ function getRandomIntInclusive(min, max) {
 }
 
 function createNewAliens(){
-
+    gameState.aliens = [];
     let alienTypes = []
     for(let i = 0;i < 6;i++){
         alienTypes.push(getRandomIntInclusive(0,1));
@@ -68,14 +74,12 @@ function createNewAliens(){
     for (let i = 0, len = alienTypes.length; i < len; i++) {
         for (let j = 0; j < 10; j++) {
             const alienType = alienTypes[i];
-
             let alienX = 30 + j*30;
             let alienY = 30 + i*30;
 
             if (alienType === 1) {
                 alienX += 3; // (kostyl) aliens of this type is a bit thinner
             }
-
             gameState.aliens.push(
                 new Alien(alienX, alienY, sprites.aliens[alienType],0.2,0.2,alienType == 2 ? 5 :1,alienType == 0 ? 1 :2 )
             );
@@ -84,8 +88,28 @@ function createNewAliens(){
 
 }
 
+function  drawHp(ctx,canvas){
+
+    hpImage = new Image();
+    hpImage.src = HpPath;
+    let x = 0;
+    console.log(gameState.cannon.hp);
+    for (let  i = 0 ; i < gameState.cannon.hp;i++){
+        ctx.drawImage(hpImage,
+        x, canvas.height-50, 20, 20,)
+        x+= 30;
+
+    }
+
+}
+
 export function init(canvas) {
+
+
     createNewAliens();
+    gameState.TotalScore = 0;
+    gameState.aliensBullets = [];
+    gameState.bullets = [];
     gameState.CanvasHeight = canvas.height;
     gameState.ImproveSpeed = false;
 	gameState.CanvasWidth = canvas.width;
@@ -94,6 +118,8 @@ export function init(canvas) {
     gameState.bunker.push( new bunker(200,canvas.height - 200,sprites.bunker[0],sprites.bunker[1],sprites.bunker[2],sprites.bunker[3]))
     gameState.bunker.push( new bunker(300,canvas.height - 200,sprites.bunker[0],sprites.bunker[1],sprites.bunker[2],sprites.bunker[3]))
     gameState.bunker.push( new bunker(400,canvas.height - 200,sprites.bunker[0],sprites.bunker[1],sprites.bunker[2],sprites.bunker[3]))
+
+
     gameState.cannon = new Cannon(
     100, canvas.height - 100,
     sprites.cannon
@@ -112,7 +138,9 @@ function updateTime()
 
 
 export function update(time, stopGame) {
-    console.log(gameState.cannon.hp);
+
+
+    sc.innerText = "Score " + gameState.TotalScore;
     if(gameState.aliens.length == 0){
         createNewAliens();
     }
@@ -133,7 +161,6 @@ export function update(time, stopGame) {
             gameState.aliensBullets.splice(i,1);
         }
     }
-    //setTimeout (gameState.aliens[getRandomIntInclusive(0,gameState.aliens.length-2)].AlienFire(),2500);
     collisionWithBorders();
     CollisionDetector();
 	if (inputHandler.isDown(37)) { // Left
@@ -164,5 +191,6 @@ export function draw(canvas, time) {
   gameState.bullets.forEach(b => b.draw(ctx));
   gameState.aliensBullets.forEach(b => b.draw(ctx));
   gameState.fire.forEach( f=> f.draw(ctx));
+  drawHp(ctx,canvas);
 }
 

@@ -19,6 +19,8 @@ export default class Cannon {
     return new Point(this.x + w / 2, this.y + h / 2, this)
   }
 
+
+
   draw(ctx, time) {
 
     //this.Boundary.draw(ctx)

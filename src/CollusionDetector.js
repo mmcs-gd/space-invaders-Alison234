@@ -7,6 +7,7 @@ import Fire from "./fire";
 import AlienBullet from "./AlienBullet";
 import bunker from "./bunker";
 import cannon from "./cannon";
+import {stopGame} from "./index"
 
 function GetMaxAndMinXCoordinate(arr){
     let max = 0
@@ -38,6 +39,13 @@ export function collisionWithBorders() {
 
     //логика отображения пушки на canvas
     const cannonBorder = gameState.cannon.Boundary;
+
+    let alienMaxY = gameState.aliens.sort( function (a,b){
+        return a.y - b.y
+    });
+    if(alienMaxY[gameState.aliens.length-1].y >= gameState.area.h-200){
+        stopGame();
+    }
 
     if (gameState.cannon.x + cannonBorder.w / 2 >= gameState.CanvasWidth) {
         gameState.cannon.x = 50;
@@ -122,33 +130,33 @@ export function CollisionDetector(){
             if(other.obj instanceof bunker && points[i].obj instanceof AlienBullet){
                 if( gameState.bunker[gameState.bunker.indexOf(other.obj)].strength == 0){
                     gameState.bunker.splice(gameState.bunker.indexOf(other.obj),1);
+                }else {
+                    gameState.aliensBullets.splice(gameState.aliensBullets.indexOf(points[i].obj), 1);
+                    gameState.bunker[gameState.bunker.indexOf(other.obj)].strength -= 5;
                 }
-                gameState.aliensBullets.splice(gameState.aliensBullets.indexOf(points[i]),1);
-                gameState.bunker[gameState.bunker.indexOf(other.obj)].strength -=5;
             }
             //пуля с бункером
             if(other.obj instanceof AlienBullet && points[i].obj instanceof bunker){
                 if( gameState.bunker[gameState.bunker.indexOf(points[i].obj)].strength == 0){
                     gameState.bunker.splice(gameState.bunker.indexOf(points[i].obj),1);
+                }else {
+                    gameState.aliensBullets.splice(gameState.aliensBullets.indexOf(other.obj), 1);
+                    gameState.bunker[gameState.bunker.indexOf(points[i].obj)].strength -= 5;
                 }
-                gameState.aliensBullets.splice(gameState.aliensBullets.indexOf(other.obj),1);
-                gameState.bunker[gameState.bunker.indexOf(points[i].obj)].strength -=5;
             }
 
             if(points[i].obj instanceof cannon && other.obj instanceof AlienBullet){
                 gameState.aliensBullets.splice(gameState.aliensBullets.indexOf(other.obj),1);
-                if(gameState.cannon.hp == 0){
-                    console.log("Ценок")
-                    break;
+                if(gameState.cannon.hp <= 0){
+                    stopGame();
                 }
                 gameState.cannon.hp--
             }
 
             if(other.obj instanceof cannon && points[i].obj instanceof AlienBullet){
                 gameState.aliensBullets.splice(gameState.aliensBullets.indexOf(points[i].obj),1);
-                if(gameState.cannon.hp == 0){
-                    console.log("Ценок")
-                    break;
+                if(gameState.cannon.hp <= 0){
+                    stopGame();
                 }
                 gameState.cannon.hp--
             }

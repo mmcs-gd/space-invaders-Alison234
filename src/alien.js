@@ -36,7 +36,7 @@ export default class Alien {
   AlienFire(){
     if(this.typeOfFire === 1 ){
       let angel = -0.5;
-      for(let i  = 0;i<7;i++) {
+      for(let i  = 0;i<5;i++) {
         angel +=0.1;
         gameState.aliensBullets.push(new AlienBullet(this.x + 15, this.y + 2, 1, angel, "#cf670a"))
       }
