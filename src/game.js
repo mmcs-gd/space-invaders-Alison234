@@ -11,7 +11,8 @@ import Rectangle from "./geometryObject/rectangle";
 import {collisionWithBorders,CollisionDetector} from "./CollusionDetector";
 import alien from "./alien";
 
-let sc= document.getElementById("score")
+//let sc= document.getElementById("score")
+
 
 let assets;
 let ship;
@@ -30,6 +31,7 @@ export const gameState = {
   bunker:[],
     fire:[],
     TotalScore : 0,
+    leaderBoard:[],
 };
 const inputHandler = new InputHandler();
 
@@ -114,10 +116,12 @@ export function init(canvas) {
     gameState.ImproveSpeed = false;
 	gameState.CanvasWidth = canvas.width;
     gameState.area = new Rectangle( 0,0,canvas.width,canvas.height);
-	gameState.bunker.push( new bunker(100,canvas.height - 200,sprites.bunker[0],sprites.bunker[1],sprites.bunker[2],sprites.bunker[3]))
-    gameState.bunker.push( new bunker(200,canvas.height - 200,sprites.bunker[0],sprites.bunker[1],sprites.bunker[2],sprites.bunker[3]))
-    gameState.bunker.push( new bunker(300,canvas.height - 200,sprites.bunker[0],sprites.bunker[1],sprites.bunker[2],sprites.bunker[3]))
-    gameState.bunker.push( new bunker(400,canvas.height - 200,sprites.bunker[0],sprites.bunker[1],sprites.bunker[2],sprites.bunker[3]))
+    let x =100;
+    for(let i = 0;i<4;i++) {
+        gameState.bunker.push(new bunker(x,canvas.height - 200, sprites.bunker[0], sprites.bunker[1], sprites.bunker[2], sprites.bunker[3]))
+        x += 100;
+    }
+
 
 
     gameState.cannon = new Cannon(
@@ -140,7 +144,7 @@ function updateTime()
 export function update(time, stopGame) {
 
 
-    sc.innerText = "Score " + gameState.TotalScore;
+    //sc.innerText = "Score " + gameState.TotalScore;
     if(gameState.aliens.length == 0){
         createNewAliens();
     }
@@ -183,8 +187,15 @@ export function update(time, stopGame) {
 }
 
 export function draw(canvas, time) {
+
+
+
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.font = "20px italic ";
+
+  ctx.fillText("Score: " + gameState.TotalScore,canvas.width - 180 ,canvas.height - 30);
   gameState.aliens.forEach(a => a.draw(ctx, time));
   gameState.bunker.forEach(b=>b.draw(ctx))
   gameState.cannon.draw(ctx);

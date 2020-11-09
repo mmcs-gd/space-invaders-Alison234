@@ -1,12 +1,13 @@
 import {
-  preload,
-  init,
-  update,
-  draw
+    preload,
+    init,
+    update,
+    draw, gameState
 } from './game'
 
 const canvas = document.getElementById("cnvs");
 const restart = document.getElementById('restart');
+let leaderboard = document.getElementById("leaderboard")
 restart.addEventListener('click',onPreloadComplete,false);
 
 canvas.width = 600;
@@ -38,6 +39,7 @@ function run(tFrame) {
 }
 
 export function stopGame() {
+    gameState.leaderBoard.push(gameState.TotalScore)
     window.cancelAnimationFrame(stopCycle);
     windowLoser();
 }
@@ -49,18 +51,28 @@ function windowLoser() {
     context.textAlign = "center";
     context.fillStyle = "#ff0000";
     context.font = "italic 50pt Impact";
-   // context.fillText("Game Over! Your total score is: " + gameState.TotalScore,canvas.width / 2, canvas.height / 2, canvas.width/2);
+    context.fillText("Game Over! Your total score is: " + gameState.TotalScore,canvas.width / 2, canvas.height / 2, canvas.width/2);
     context.closePath();
     restart.style.visibility = 'visible';
 }
 
+function leaderBoard(){
+    gameState.leaderBoard.sort(((a, b) => (b-a)));
+    console.log(gameState.leaderBoard);
+    leaderboard.innerText = "Leader Board \n";
+    lastTick = performance.now();
+    for(let i= 0;i<gameState.leaderBoard.length;i++){
+        leaderboard.innerText += gameState.leaderBoard[i] + "\n";
+    }
+}
+
 function onPreloadComplete() {
-  lastTick = performance.now();
-  lastRender = lastTick;
-  stopCycle = null;
-  restart.style.visibility = 'hidden'
-  init(canvas);
-  run();
+    leaderBoard();
+    lastRender = lastTick;
+    stopCycle = null;
+    restart.style.visibility = 'hidden'
+    init(canvas);
+    run();
 }
 
 preload(onPreloadComplete);

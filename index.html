@@ -2,16 +2,38 @@
 <html>
 <head>
 	<title>Space Ivaders</title>
-	<meta charset="UTF-8" />
-  <style>
-    * { margin:0; padding:0; }
-    html, body { width:100%; height:100%; background: black; }
-    canvas { widht: 600px; display:block; background: black; margin: 0 auto; }
+	<meta charset="UTF-8">
+  <style>* { margin:0; padding:0; }
+    html, body { width:100%; height:100%; background: #000a1c; }
+    canvas { widht: 600px; display:block; background: #000a1c; margin: 0 auto;}
+  	leaderboard{position:absolute;background-color: aliceblue;height: 20%;width: 20%}
+  button{
+	  left: 45%;
+	  top: 55%;
+	  width: 100px;
+	  height: 10px;
+	  position: absolute;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  visibility: hidden;
+	  font-weight: 700;
+	  color: white;
+	  text-decoration: none;
+	  padding: .8em 1em calc(.8em + 3px);
+	  border-radius: 3px;
+	  background: rgb(64, 199, 129);
+	  box-shadow: 0 -3px rgb(53,167,110) inset;
+	  transition: 0.2s;
+  }
   </style>
+
 </head>
 
 <body>
-	<canvas width="100%" height="100%" id='cnvs'></canvas>
+	<div id = "leaderboard"> </div>
+	<button id = 'restart'>Restart</button>
+	<canvas width="100%" height="100%" id="cnvs"></canvas>
 	<script src="./src/index.js"></script>
 </body>
 </html>
