@@ -43,7 +43,8 @@ export default class Alien {
     }
     if(this.typeOfFire == 2){
       let vx = Math.sin(this.x - gameState.cannon.x)
-      gameState.aliensBullets.push(new AlienBullet(this.x + 15, this.y + 2, 5,vx , "#1cdaf3"))
+
+      gameState.aliensBullets.push(new AlienBullet(this.x + 15, this.y + 2, 5,vx  , "#1cdaf3"))
     }
 
   }
